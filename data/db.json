@@ -1,0 +1,59 @@
+{
+  "cars": [
+    {
+      "id": 134,
+      "image": "615edbad4c35b.png",
+      "name": "testYII",
+      "description": "transaction",
+      "price": 123,
+      "contacts": "transaction",
+      "technical_characteristics": {
+        "car_id": null,
+        "brand": "brand",
+        "model": "model",
+        "productionYear": 2020,
+        "body": "body",
+        "mileage": 223123
+      },
+      "options": [
+        {
+          "option_name": "one"
+        },
+        {
+          "option_name": "two"
+        },
+        {
+          "option_name": "three"
+        }
+      ]
+    },
+    {
+      "name": "lada",
+      "description": "русская машина",
+      "price": 1000000000,
+      "image": "down.png",
+      "contacts": "+79876543210 ",
+      "technical_characteristics": {
+        "brand": "vesta",
+        "model": "vesta+",
+        "productionYear": 2012,
+        "body": "хэтчбек",
+        "mileage": 150000
+      },
+      "options": [
+        {
+          "conditioner": "да"
+        }
+      ],
+      "id": 135
+    },
+    {
+      "name": "lacetti",
+      "description": "ин. машина",
+      "price": 9999999999,
+      "image": "down.png",
+      "contacts": "+79999999999",
+      "id": 136
+    }
+  ]
+}
