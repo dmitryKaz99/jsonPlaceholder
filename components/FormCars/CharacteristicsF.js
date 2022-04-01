@@ -1,46 +1,45 @@
 import OptionsF from "./OptionsF";
-import { getArrOption, getSelectedCarPost } from "../../redux/selectors";
+import MyInput from "../UI/MyInput";
+import { getArrOption, getIsEdit } from "../../redux/selectors";
 import {
   setSelectedOption,
   setArrOption,
+  setArrOptionUsingEdit,
 } from "../../redux/actions/carsActions";
-import { Form } from "react-bootstrap";
+import { inputsConfig } from "../common/inputs";
+import { translateLabel } from "../../utils/translateLabel";
 import { useEffect } from "react";
 import { connect } from "react-redux";
-
-const generalName = "technical_characteristics";
-const inputsCharacteristics = [
-  { nameEl: "brand", label: "Марка", type: "text" },
-  { nameEl: "model", label: "Модель", type: "text" },
-  {
-    nameEl: "productionYear",
-    label: "Год выпуска",
-    type: "number",
-    onlyNumber: true,
-  },
-  { nameEl: "body", label: "Кузов", type: "text" },
-];
 
 const CharacteristicsF = ({
   register,
   setValue,
-  setSelectedOption,
-  arrOption,
-  setArrOption,
   selectedCarPost,
+  setSelectedOption,
+  setArrOption,
+  setArrOptionUsingEdit,
+  arrOption,
+  isEdit,
 }) => {
-  // finish with it
-  useEffect(() => {
-    inputsCharacteristics.forEach((i) => {
-      const parentEl = selectedCarPost && selectedCarPost[generalName];
+  const generalName = "technical_characteristics";
 
-      setValue(
-        `${generalName}.${i.nameEl}`,
-        selectedCarPost ? parentEl[i.nameEl] : ""
-      );
-    });
+  useEffect(() => {
+    if (selectedCarPost) {
+      inputsConfig.characteristics.forEach((i) => {
+        const wrapper = selectedCarPost[generalName];
+        setValue(`${generalName}.${i.name}`, wrapper ? wrapper[i.name] : "");
+      });
+
+      selectedCarPost.options?.forEach((o) => {
+        for (const key of Object.keys(o)) {
+          const labelRU = translateLabel(key);
+          setArrOptionUsingEdit({ value: key, label: labelRU });
+        }
+      });
+    }
   }, [selectedCarPost]);
 
+  // debug default value
   const selectedHandler = (e) => {
     const index = e.nativeEvent.target.selectedIndex,
       label = e.nativeEvent.target[index].text;
@@ -51,28 +50,29 @@ const CharacteristicsF = ({
 
   return (
     <>
-      {inputsCharacteristics.map((i) => {
-        const { nameEl, label, type, onlyNumber } = i;
+      {inputsConfig.characteristics.map((i) => {
+        const { name, label, type, onlyNumber } = i;
 
         return (
-          <Form.Group className="mb-3" key={nameEl}>
-            <Form.Label>{label}</Form.Label>
-            <Form.Control
-              type={type}
-              {...register((name = `${generalName}.${nameEl}`), {
-                required: "Обязательное поле",
-                valueAsNumber: onlyNumber,
-              })}
-            />
-          </Form.Group>
+          <MyInput
+            register={register}
+            label={label}
+            type={type}
+            nameEl={`${generalName}.${name}`}
+            onlyNumber={onlyNumber}
+            key={name}
+          />
         );
       })}
 
       <OptionsF
         register={register}
+        setValue={setValue}
+        selectedCarPost={selectedCarPost}
         selectedHandler={selectedHandler}
         setArrOption={setArrOption}
         arrOption={arrOption}
+        isEdit={isEdit}
       />
     </>
   );
@@ -80,10 +80,11 @@ const CharacteristicsF = ({
 
 const mapStateToProps = (state) => ({
   arrOption: getArrOption(state),
-  selectedCarPost: getSelectedCarPost(state),
+  isEdit: getIsEdit(state),
 });
 
 export default connect(mapStateToProps, {
   setSelectedOption,
   setArrOption,
+  setArrOptionUsingEdit,
 })(CharacteristicsF);

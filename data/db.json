@@ -28,13 +28,15 @@
       ]
     },
     {
-      "name": "lada",
-      "description": "русская машина",
-      "price": 1000000000,
-      "image": "down.png",
+      "name": "купить машину",
+      "description": "русскую",
+      "price": 1500000,
+      "image": {
+        "0": {}
+      },
       "contacts": "+79876543210 ",
       "technical_characteristics": {
-        "brand": "vesta",
+        "brand": "lada",
         "model": "vesta+",
         "productionYear": 2012,
         "body": "хэтчбек",
@@ -43,17 +45,15 @@
       "options": [
         {
           "conditioner": "да"
+        },
+        {
+          "airbags": "добавить"
+        },
+        {
+          "other": "реснички"
         }
       ],
       "id": 135
-    },
-    {
-      "name": "lacetti",
-      "description": "ин. машина",
-      "price": 9999999999,
-      "image": "down.png",
-      "contacts": "+79999999999",
-      "id": 136
     }
   ]
 }

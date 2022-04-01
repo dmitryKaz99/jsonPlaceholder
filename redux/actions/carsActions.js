@@ -1,11 +1,10 @@
-import ApiServices from "../../api/ApiServices";
+import CarServices from "../../api/CarServices";
 import * as t from "../types";
 
 // car posts
 const setCarPosts = (carPosts) => ({ type: t.SET_CAR_POSTS, carPosts });
 const setIsLoading = (flag) => ({ type: t.SET_IS_LOADING, flag });
-const getError = (err) => ({ type: t.GET_ERROR, err });
-const setToggleUpdatePosts = () => ({ type: t.SET_TOGGLE_UPDATE_POSTS });
+const getError = (err) => ({ type: t.SET_ERROR, err });
 
 export const setSelectedCarPost = (id) => ({
   type: t.SET_SELECTED_CAR_POST,
@@ -14,21 +13,14 @@ export const setSelectedCarPost = (id) => ({
 
 export const getCarsWithApi = () => async (dispatch) => {
   try {
-    // dispatch(setIsLoading(true));
+    dispatch(setIsLoading(true));
 
-    const res = await ApiServices.getAll();
+    const res = await CarServices.getAll();
     dispatch(setCarPosts(res));
   } catch (e) {
-    // dispatch(getError(e.message));
-  }
-};
-
-export const postCarForm = (data) => async (dispatch) => {
-  try {
-    ApiServices.postCar(data);
-  } catch (e) {
+    dispatch(getError(e.message));
   } finally {
-    dispatch(setToggleUpdatePosts());
+    dispatch(setIsLoading(false));
   }
 };
 
@@ -44,3 +36,21 @@ export const setSelectedOption = (option) => ({
   option,
 });
 export const setArrOption = () => ({ type: t.SET_ARRAY_OPTION });
+export const setArrOptionUsingEdit = (optionEdit) => ({
+  type: t.SET_ARRAY_OPTION_USING_EDIT,
+  optionEdit,
+});
+
+// debug reload page
+export const postOrPutOnApi = (data, id) => async (dispatch) => {
+  try {
+    CarServices.postOrPut(data, id);
+  } catch (e) {
+    console.log(e);
+  } finally {
+    dispatch(getCarsWithApi());
+
+    dispatch(setSelectedCarPost(null));
+    dispatch(setIsCharacteristics(false));
+  }
+};

@@ -1,21 +1,24 @@
+import { translateLabel } from "../../utils/translateLabel";
+
 const OptionsP = ({ options }) => {
   return (
     <div>
       <hr />
       <p>Опции:</p>
 
-      {/* translate keyO */}
-      {options.map((o, i) => {
-        for (const [keyO, valueO] of Object.entries(o)) {
-          return (
-            <ul key={i}>
-              <li>
-                {keyO}: {valueO || "Описания нет"}
+      <ul>
+        {options.map((o, i) => {
+          for (const [key, value] of Object.entries(o)) {
+            const labelRU = translateLabel(key);
+
+            return (
+              <li key={i}>
+                {labelRU}: {value || "Описания нет"}
               </li>
-            </ul>
-          );
-        }
-      })}
+            );
+          }
+        })}
+      </ul>
     </div>
   );
 };

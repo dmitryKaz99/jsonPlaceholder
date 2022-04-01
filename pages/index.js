@@ -1,22 +1,12 @@
 import MyContainer from "../components/UI/MyContainer";
 import FormCars from "../components/FormCars/FormCars";
 import Cars from "../components/CarPosts/Cars";
-import { getIsFormOpen, getToggleUpdatePosts } from "../redux/selectors";
-import { getCarsWithApi, setIsOpenForm } from "../redux/actions/carsActions";
+import { getIsFormOpen } from "../redux/selectors";
+import { setIsOpenForm } from "../redux/actions/carsActions";
 import { Button } from "react-bootstrap";
-import { useEffect } from "react";
 import { connect } from "react-redux";
 
-const Main = ({
-  getCarsWithApi,
-  isFormOpen,
-  setIsOpenForm,
-  toggleUpdatePosts,
-}) => {
-  useEffect(() => {
-    getCarsWithApi();
-  }, [toggleUpdatePosts]);
-
+const Main = ({ isFormOpen, setIsOpenForm }) => {
   return (
     <MyContainer>
       <div className="my-5 d-flex justify-content-center">
@@ -34,11 +24,6 @@ const Main = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  isFormOpen: getIsFormOpen(state),
-  toggleUpdatePosts: getToggleUpdatePosts(state),
-});
+const mapStateToProps = (state) => ({ isFormOpen: getIsFormOpen(state) });
 
-export default connect(mapStateToProps, { getCarsWithApi, setIsOpenForm })(
-  Main
-);
+export default connect(mapStateToProps, { setIsOpenForm })(Main);

@@ -1,15 +1,25 @@
+import { optionsConfig } from "../common/options";
 import { Form, Button } from "react-bootstrap";
+import { useEffect } from "react";
 
-const standardOptions = [
-  { value: "other", label: "Любая другая опция" },
-  { value: "conditioner", label: "Кондиционер" },
-  { value: "airbags", label: "Подушки безопасности" },
-  { value: "multimedia", label: "Мультимедия" },
-  { value: "cruize_control", label: "Круиз контроль" },
-];
+const OptionsF = ({
+  register,
+  setValue,
+  selectedCarPost,
+  selectedHandler,
+  setArrOption,
+  arrOption,
+  isEdit,
+}) => {
+  useEffect(() => {
+    if (isEdit) {
+      arrOption.forEach((o, i) => {
+        const wrapper = selectedCarPost.options[i];
+        setValue(`options.${i}.${o.value}`, wrapper[o.value]);
+      });
+    }
+  }, [isEdit]);
 
-// debug default value
-const OptionsF = ({ register, selectedHandler, setArrOption, arrOption }) => {
   return (
     <>
       <div className="d-flex align-items-center">
@@ -23,7 +33,7 @@ const OptionsF = ({ register, selectedHandler, setArrOption, arrOption }) => {
             Выбрать
           </option>
 
-          {standardOptions.map((o) => {
+          {optionsConfig.map((o) => {
             return (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -41,7 +51,9 @@ const OptionsF = ({ register, selectedHandler, setArrOption, arrOption }) => {
         {arrOption.map((o, i) => {
           return (
             <Form.Group key={i} className="mb-3">
-              <Form.Label>{o.label}</Form.Label>
+              <Form.Label>
+                <i>{o.label}</i>
+              </Form.Label>
               <Form.Control
                 {...register((name = `options.${i}.${o.value}`))}
                 placeholder="Описание"

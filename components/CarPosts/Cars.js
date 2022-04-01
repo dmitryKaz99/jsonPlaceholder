@@ -1,18 +1,27 @@
 import CharacteristicsP from "./CharacteristicsP";
 import OptionsP from "./OptionsP";
-import { getCars } from "../../redux/selectors";
-import { setSelectedCarPost } from "../../redux/actions/carsActions";
+import { getCars, getIsLoading, getError } from "../../redux/selectors";
+import {
+  getCarsWithApi,
+  setSelectedCarPost,
+} from "../../redux/actions/carsActions";
 import { Button, Card } from "react-bootstrap";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 
-const Cars = ({ cars, setSelectedCarPost }) => {
+const Cars = ({ cars, isLoading, err, setSelectedCarPost, getCarsWithApi }) => {
+  useEffect(() => getCarsWithApi(), []);
+
   return (
     <>
       <div className="d-flex justify-content-center flex-wrap mt-5">
+        {isLoading && <p>LOADING...</p>}
+        {err && <p>{err}</p>}
+
         {cars.map((post) => {
           return (
             <div key={post.id} className="p-3">
-              <Card style={{ width: "20rem" }}>
+              <Card style={{ width: "25rem" }}>
                 <Card.Img variant="top" src={post.image} />
 
                 <Card.Body>
@@ -47,6 +56,12 @@ const Cars = ({ cars, setSelectedCarPost }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ cars: getCars(state) });
+const mapStateToProps = (state) => ({
+  cars: getCars(state),
+  isLoading: getIsLoading(state),
+  err: getError(state),
+});
 
-export default connect(mapStateToProps, { setSelectedCarPost })(Cars);
+export default connect(mapStateToProps, { getCarsWithApi, setSelectedCarPost })(
+  Cars
+);

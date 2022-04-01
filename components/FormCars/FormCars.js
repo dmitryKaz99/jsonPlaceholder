@@ -1,82 +1,74 @@
 import CharacteristicsF from "./CharacteristicsF";
+import MyInput from "../UI/MyInput";
 import {
   getIsCharacteristics,
   getSelectedCarPost,
 } from "../../redux/selectors";
 import {
-  setIsOpenForm,
   setIsCharacteristics,
-  postCarForm,
+  postOrPutOnApi,
 } from "../../redux/actions/carsActions";
+import { inputsConfig } from "../common/inputs";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
-const inputsMain = [
-  { name: "name", label: "Название", type: "text" },
-  { name: "description", label: "Описание", type: "text" },
-  { name: "price", label: "Цена", type: "number", onlyNumber: true },
-  { name: "image", label: "Фото", type: "file" },
-  { name: "contacts", label: "Контакты", type: "text" },
-];
-
 const FormCars = ({
-  setIsOpenForm,
   isCharacteristics,
-  setIsCharacteristics,
-  postCarForm,
   selectedCarPost,
+  setIsCharacteristics,
+  postOrPutOnApi,
 }) => {
+  const refForm = useRef();
+
   useEffect(() => {
-    inputsMain.forEach((i) =>
-      setValue(i.name, selectedCarPost ? selectedCarPost[i.name] : "")
-    );
+    if (selectedCarPost) {
+      refForm.current.scrollIntoView();
 
-    selectedCarPost?.technical_characteristics
-      ? setIsCharacteristics(true)
-      : setIsCharacteristics(false);
+      inputsConfig.main.forEach((i) =>
+        setValue(i.name, selectedCarPost[i.name])
+      );
+
+      selectedCarPost.technical_characteristics
+        ? setIsCharacteristics(true)
+        : setIsCharacteristics(false);
+    }
   }, [selectedCarPost]);
-
-  // testing Image value
-
-  // const [postImage, setPostImage] = useState(null);
-  // const foo = (e) => {
-  //   setPostImage(e.target.files[0].name);
-  // };
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
-    // if (data.image) data.image = postImage;
+    selectedCarPost
+      ? postOrPutOnApi(data, selectedCarPost.id)
+      : postOrPutOnApi(data);
 
-    postCarForm(data);
-    setIsOpenForm(false);
+    reset();
   };
 
-  // add error, etc
   return (
-    <div className="border p-5">
+    <div className="border p-5" ref={refForm}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {inputsMain.map((i) => {
+        {inputsConfig.main.map((i) => {
           const { name, label, type, onlyNumber } = i;
 
+          // download image
           return (
-            <Form.Group className="mb-3" key={name}>
-              <Form.Label>{label}</Form.Label>
-              <Form.Control
-                type={type}
-                {...register(name, {
-                  required: "Обязательное поле",
-                  valueAsNumber: onlyNumber,
-                })}
-              />
-            </Form.Group>
+            <MyInput
+              register={register}
+              errors={errors}
+              label={label}
+              type={type}
+              nameEl={name}
+              onlyNumber={onlyNumber}
+              key={name}
+            />
           );
         })}
 
@@ -85,17 +77,23 @@ const FormCars = ({
             type="checkbox"
             label="Технические характеристики?"
             value={isCharacteristics}
+            disabled={selectedCarPost?.technical_characteristics && true}
             onChange={() => setIsCharacteristics(!isCharacteristics)}
           />
         </Form.Group>
 
+        {/* add err */}
         {isCharacteristics && (
-          <CharacteristicsF register={register} setValue={setValue} />
+          <CharacteristicsF
+            register={register}
+            setValue={setValue}
+            selectedCarPost={selectedCarPost}
+          />
         )}
 
         <div className="mt-5 d-flex justify-content-center">
           <Button className="my-3" variant="primary" type="submit">
-            Отправить
+            {selectedCarPost ? "Отредактировать" : "Создать"}
           </Button>
         </div>
       </Form>
@@ -109,7 +107,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  setIsOpenForm,
   setIsCharacteristics,
-  postCarForm,
+  postOrPutOnApi,
 })(FormCars);
