@@ -3,12 +3,15 @@ import MyInput from "../UI/MyInput";
 import {
   getIsCharacteristics,
   getSelectedCarPost,
+  getBaseImg,
 } from "../../redux/selectors";
 import {
   setIsCharacteristics,
-  postOrPutOnApi,
+  setArrOptionUsingEdit,
 } from "../../redux/actions/carsActions";
+import { postOrPutOnApi, uploadImg } from "../../redux/creators/carsCreators";
 import { inputsConfig } from "../common/inputs";
+import { translateLabel } from "../../utils/translateLabel";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useEffect, useRef } from "react";
@@ -17,8 +20,11 @@ import { connect } from "react-redux";
 const FormCars = ({
   isCharacteristics,
   selectedCarPost,
+  baseImg,
   setIsCharacteristics,
   postOrPutOnApi,
+  uploadImg,
+  setArrOptionUsingEdit,
 }) => {
   const refForm = useRef();
 
@@ -26,13 +32,20 @@ const FormCars = ({
     if (selectedCarPost) {
       refForm.current.scrollIntoView();
 
-      inputsConfig.main.forEach((i) =>
-        setValue(i.name, selectedCarPost[i.name])
-      );
+      inputsConfig.main.forEach((i) => {
+        setValue(i.name, selectedCarPost[i.name]);
+      });
 
       selectedCarPost.technical_characteristics
         ? setIsCharacteristics(true)
         : setIsCharacteristics(false);
+
+      selectedCarPost.options?.forEach((o) => {
+        for (const key of Object.keys(o)) {
+          const labelRU = translateLabel(key);
+          setArrOptionUsingEdit({ value: key, label: labelRU });
+        }
+      });
     }
   }, [selectedCarPost]);
 
@@ -45,6 +58,7 @@ const FormCars = ({
   } = useForm();
 
   const onSubmit = (data) => {
+    if (data.image) data.image = baseImg;
     selectedCarPost
       ? postOrPutOnApi(data, selectedCarPost.id)
       : postOrPutOnApi(data);
@@ -56,18 +70,19 @@ const FormCars = ({
     <div className="border p-5" ref={refForm}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         {inputsConfig.main.map((i) => {
-          const { name, label, type, onlyNumber } = i;
+          const { name, label, type, onlyNumber, isImg } = i;
 
-          // download image
           return (
             <MyInput
               register={register}
-              errors={errors}
               label={label}
               type={type}
               nameEl={name}
               onlyNumber={onlyNumber}
               key={name}
+              isImg={isImg}
+              uploadImg={uploadImg}
+              baseImg={baseImg}
             />
           );
         })}
@@ -76,13 +91,12 @@ const FormCars = ({
           <Form.Check
             type="checkbox"
             label="Технические характеристики?"
-            value={isCharacteristics}
-            disabled={selectedCarPost?.technical_characteristics && true}
+            disabled={selectedCarPost?.technical_characteristics}
+            checked={isCharacteristics}
             onChange={() => setIsCharacteristics(!isCharacteristics)}
           />
         </Form.Group>
 
-        {/* add err */}
         {isCharacteristics && (
           <CharacteristicsF
             register={register}
@@ -104,9 +118,12 @@ const FormCars = ({
 const mapStateToProps = (state) => ({
   isCharacteristics: getIsCharacteristics(state),
   selectedCarPost: getSelectedCarPost(state),
+  baseImg: getBaseImg(state),
 });
 
 export default connect(mapStateToProps, {
   setIsCharacteristics,
   postOrPutOnApi,
+  uploadImg,
+  setArrOptionUsingEdit,
 })(FormCars);

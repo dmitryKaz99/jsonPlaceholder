@@ -6,7 +6,8 @@ const OptionsF = ({
   register,
   setValue,
   selectedCarPost,
-  selectedHandler,
+  selectedOption,
+  selectedOptionHandler,
   setArrOption,
   arrOption,
   isEdit,
@@ -15,7 +16,7 @@ const OptionsF = ({
     if (isEdit) {
       arrOption.forEach((o, i) => {
         const wrapper = selectedCarPost.options[i];
-        setValue(`options.${i}.${o.value}`, wrapper[o.value]);
+        setValue(`options.${i}.${o.value}`, wrapper?.[o.value]);
       });
     }
   }, [isEdit]);
@@ -26,11 +27,11 @@ const OptionsF = ({
         <Form.Select
           aria-label="Default select example"
           className="me-3"
-          onChange={selectedHandler}
+          onChange={selectedOptionHandler}
           defaultValue={"DEFAULT"}
         >
           <option disabled value={"DEFAULT"}>
-            Выбрать
+            Выбрать опцию
           </option>
 
           {optionsConfig.map((o) => {
@@ -42,7 +43,12 @@ const OptionsF = ({
           })}
         </Form.Select>
 
-        <Button variant="warning" className="my-3" onClick={setArrOption}>
+        <Button
+          variant="warning"
+          className="my-3"
+          onClick={setArrOption}
+          disabled={!selectedOption}
+        >
           Добавить
         </Button>
       </div>

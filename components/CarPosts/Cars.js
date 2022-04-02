@@ -1,16 +1,34 @@
 import CharacteristicsP from "./CharacteristicsP";
 import OptionsP from "./OptionsP";
-import { getCars, getIsLoading, getError } from "../../redux/selectors";
 import {
-  getCarsWithApi,
-  setSelectedCarPost,
-} from "../../redux/actions/carsActions";
+  getCars,
+  getIsLoading,
+  getError,
+  getSelectedCarPost,
+} from "../../redux/selectors";
+import { setSelectedCarPost } from "../../redux/actions/carsActions";
+import { getCarsWithApi } from "../../redux/creators/carsCreators";
 import { Button, Card } from "react-bootstrap";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 
-const Cars = ({ cars, isLoading, err, setSelectedCarPost, getCarsWithApi }) => {
+const Cars = ({
+  cars,
+  isLoading,
+  err,
+  selectedCarPost,
+  setSelectedCarPost,
+  getCarsWithApi,
+}) => {
   useEffect(() => getCarsWithApi(), []);
+
+  // if (!cars.length) {
+  //   return (
+  //     <div className="text-center my-5">
+  //       <i>Карточек</i> еще нет...
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
@@ -25,8 +43,10 @@ const Cars = ({ cars, isLoading, err, setSelectedCarPost, getCarsWithApi }) => {
                 <Card.Img variant="top" src={post.image} />
 
                 <Card.Body>
-                  <Card.Title>{post.name}</Card.Title>
-                  <Card.Text> {post.description}</Card.Text>
+                  <div className="text-center mb-3">
+                    <Card.Title>{post.name}</Card.Title>
+                    <Card.Text> {post.description}</Card.Text>
+                  </div>
 
                   <ul>
                     <li>Цена: {post.price}</li>
@@ -41,12 +61,15 @@ const Cars = ({ cars, isLoading, err, setSelectedCarPost, getCarsWithApi }) => {
                   {post.options && <OptionsP options={post.options} />}
                 </Card.Body>
 
-                <Button
-                  variant="warning"
-                  onClick={() => setSelectedCarPost(post)}
-                >
-                  Редактировать
-                </Button>
+                <div className="mb-4 d-flex justify-content-center">
+                  <Button
+                    disabled={selectedCarPost === post}
+                    variant={selectedCarPost === post ? "danger" : "warning"}
+                    onClick={() => setSelectedCarPost(post)}
+                  >
+                    Редактировать
+                  </Button>
+                </div>
               </Card>
             </div>
           );
@@ -60,6 +83,7 @@ const mapStateToProps = (state) => ({
   cars: getCars(state),
   isLoading: getIsLoading(state),
   err: getError(state),
+  selectedCarPost: getSelectedCarPost(state),
 });
 
 export default connect(mapStateToProps, { getCarsWithApi, setSelectedCarPost })(

@@ -4,11 +4,11 @@ const initialState = {
   cars: [],
   isLoading: false,
   err: "",
-  toggleUpdatePosts: true,
   selectedCarPost: null,
 
   isFormOpen: false,
   isCharacteristics: false,
+  baseImg: "",
   selectedOption: null,
   arrOption: [],
   isEdit: false,
@@ -22,24 +22,31 @@ const carsReducer = (state = initialState, action) => {
       return { ...state, isLoading: action.flag };
     case t.SET_ERROR:
       return { ...state, err: action.err };
-
     case t.SET_SELECTED_CAR_POST:
       return {
         ...state,
-        selectedCarPost: action.id,
+        selectedCarPost: action.post,
         isFormOpen: true,
         arrOption: [],
         isEdit: false,
+        // selectedOption: null,
       };
 
     case t.SET_IS_OPEN_FORM:
-      return { ...state, isFormOpen: action.flag };
+      return {
+        ...state,
+        isFormOpen: action.flag,
+        isCharacteristics: false,
+        arrOption: [],
+        isEdit: false,
+      };
     case t.SET_IS_CHARACTERISTICS:
       return {
         ...state,
         isCharacteristics: action.flag,
       };
-
+    case t.SET_BASE_IMG:
+      return { ...state, baseImg: action.img };
     case t.SET_SELECTED_OPTION:
       return { ...state, selectedOption: action.option };
     case t.SET_ARRAY_OPTION:

@@ -1,7 +1,5 @@
 export const translateLabel = (label) => {
   switch (label) {
-    case "other":
-      return "Любая другая опция";
     case "conditioner":
       return "Кондиционер";
     case "airbags":
@@ -10,6 +8,8 @@ export const translateLabel = (label) => {
       return "Мультимедия";
     case "cruize_control":
       return "Круиз контроль";
+    case "other":
+      return "Любая другая опция";
 
     default:
       return label;

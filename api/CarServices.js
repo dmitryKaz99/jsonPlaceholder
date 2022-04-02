@@ -14,8 +14,10 @@ export default class CarServices {
         headers: { "Content-Type": "application/json" },
       };
 
-    id
-      ? axios.put(BASE_URL + "/" + id, json, headerTypes)
-      : axios.post(BASE_URL, json, headerTypes);
+    if (id) {
+      return await axios.put(BASE_URL + "/" + id, json, headerTypes);
+    } else {
+      return await axios.post(BASE_URL, json, headerTypes);
+    }
   }
 }

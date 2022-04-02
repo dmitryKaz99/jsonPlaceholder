@@ -1,6 +1,15 @@
 import { Form } from "react-bootstrap";
 
-const MyInput = ({ register, errors, label, type, nameEl, onlyNumber }) => {
+const MyInput = ({
+  register,
+  label,
+  type,
+  nameEl,
+  onlyNumber,
+  isImg,
+  uploadImg,
+  baseImg,
+}) => {
   return (
     <Form.Group className="mb-3">
       <Form.Label>
@@ -12,10 +21,8 @@ const MyInput = ({ register, errors, label, type, nameEl, onlyNumber }) => {
           required: "Обязательное поле",
           valueAsNumber: onlyNumber,
         })}
+        onChange={isImg ? (e) => uploadImg(e, baseImg) : null}
       />
-      {errors?.[nameEl] && (
-        <p className="mt-1 text-primary">{errors?.[nameEl]?.message}</p>
-      )}
     </Form.Group>
   );
 };

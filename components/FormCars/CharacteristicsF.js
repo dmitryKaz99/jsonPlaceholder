@@ -1,13 +1,15 @@
 import OptionsF from "./OptionsF";
 import MyInput from "../UI/MyInput";
-import { getArrOption, getIsEdit } from "../../redux/selectors";
+import {
+  getSelectedOption,
+  getArrOption,
+  getIsEdit,
+} from "../../redux/selectors";
 import {
   setSelectedOption,
   setArrOption,
-  setArrOptionUsingEdit,
 } from "../../redux/actions/carsActions";
 import { inputsConfig } from "../common/inputs";
-import { translateLabel } from "../../utils/translateLabel";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 
@@ -15,9 +17,9 @@ const CharacteristicsF = ({
   register,
   setValue,
   selectedCarPost,
+  selectedOption,
   setSelectedOption,
   setArrOption,
-  setArrOptionUsingEdit,
   arrOption,
   isEdit,
 }) => {
@@ -27,20 +29,12 @@ const CharacteristicsF = ({
     if (selectedCarPost) {
       inputsConfig.characteristics.forEach((i) => {
         const wrapper = selectedCarPost[generalName];
-        setValue(`${generalName}.${i.name}`, wrapper ? wrapper[i.name] : "");
-      });
-
-      selectedCarPost.options?.forEach((o) => {
-        for (const key of Object.keys(o)) {
-          const labelRU = translateLabel(key);
-          setArrOptionUsingEdit({ value: key, label: labelRU });
-        }
+        setValue(`${generalName}.${i.name}`, wrapper?.[i.name]);
       });
     }
   }, [selectedCarPost]);
 
-  // debug default value
-  const selectedHandler = (e) => {
+  const selectedOptionHandler = (e) => {
     const index = e.nativeEvent.target.selectedIndex,
       label = e.nativeEvent.target[index].text;
     const value = e.target.value;
@@ -69,7 +63,8 @@ const CharacteristicsF = ({
         register={register}
         setValue={setValue}
         selectedCarPost={selectedCarPost}
-        selectedHandler={selectedHandler}
+        selectedOption={selectedOption}
+        selectedOptionHandler={selectedOptionHandler}
         setArrOption={setArrOption}
         arrOption={arrOption}
         isEdit={isEdit}
@@ -79,6 +74,7 @@ const CharacteristicsF = ({
 };
 
 const mapStateToProps = (state) => ({
+  selectedOption: getSelectedOption(state),
   arrOption: getArrOption(state),
   isEdit: getIsEdit(state),
 });
@@ -86,5 +82,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   setSelectedOption,
   setArrOption,
-  setArrOptionUsingEdit,
 })(CharacteristicsF);

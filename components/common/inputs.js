@@ -3,7 +3,7 @@ export const inputsConfig = {
     { name: "name", label: "Название", type: "text" },
     { name: "description", label: "Описание", type: "text" },
     { name: "price", label: "Цена", type: "number", onlyNumber: true },
-    { name: "image", label: "Фото", type: "file" },
+    { name: "image", label: "Фото", type: "file", isImg: true },
     { name: "contacts", label: "Контакты", type: "text" },
   ],
   characteristics: [
