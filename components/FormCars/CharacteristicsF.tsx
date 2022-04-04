@@ -1,5 +1,4 @@
 import OptionsF from "./OptionsF";
-import MyInput from "../UI/MyInput";
 import {
   getSelectedOption,
   getArrOption,
@@ -10,13 +9,15 @@ import {
   setArrOption,
 } from "../../redux/actions/carsActions";
 import { inputsConfig } from "../common/inputs";
-import { useEffect } from "react";
+import { Form } from "react-bootstrap";
+import { FC, useEffect } from "react";
 import { connect } from "react-redux";
 
 const CharacteristicsF = ({
   register,
   setValue,
   selectedCarPost,
+  isCharacteristics,
   selectedOption,
   setSelectedOption,
   setArrOption,
@@ -26,13 +27,13 @@ const CharacteristicsF = ({
   const generalName = "technical_characteristics";
 
   useEffect(() => {
-    if (selectedCarPost) {
+    if (selectedCarPost && isCharacteristics) {
       inputsConfig.characteristics.forEach((i) => {
         const wrapper = selectedCarPost[generalName];
-        setValue(`${generalName}.${i.name}`, wrapper?.[i.name]);
+        wrapper && setValue(`${generalName}.${i.name}`, wrapper[i.name]);
       });
     }
-  }, [selectedCarPost]);
+  }, [selectedCarPost, isCharacteristics]);
 
   const selectedOptionHandler = (e) => {
     const index = e.nativeEvent.target.selectedIndex,
@@ -45,17 +46,23 @@ const CharacteristicsF = ({
   return (
     <>
       {inputsConfig.characteristics.map((i) => {
-        const { name, label, type, onlyNumber } = i;
+        let { name, label, type, onlyNumber } = i;
+        name = `${generalName}.${name}`;
 
         return (
-          <MyInput
-            register={register}
-            label={label}
-            type={type}
-            nameEl={`${generalName}.${name}`}
-            onlyNumber={onlyNumber}
-            key={name}
-          />
+          <Form.Group className="mb-3" key={name}>
+            <Form.Label>
+              <i>{label}</i>
+            </Form.Label>
+
+            <Form.Control
+              type={type}
+              {...register(name, {
+                required: true,
+                valueAsNumber: onlyNumber,
+              })}
+            />
+          </Form.Group>
         );
       })}
 

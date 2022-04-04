@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 const CharacteristicsP = ({ characteristics }) => {
   const { brand, model, productionYear, body, mileage } = characteristics;
 

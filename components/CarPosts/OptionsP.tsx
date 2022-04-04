@@ -1,4 +1,5 @@
 import { translateLabel } from "../../utils/translateLabel";
+import { FC } from "react";
 
 const OptionsP = ({ options }) => {
   return (

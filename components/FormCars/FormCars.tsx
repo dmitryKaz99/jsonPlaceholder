@@ -1,36 +1,34 @@
 import CharacteristicsF from "./CharacteristicsF";
-import MyInput from "../UI/MyInput";
 import {
-  getIsCharacteristics,
   getSelectedCarPost,
+  getIsCharacteristics,
   getBaseImg,
 } from "../../redux/selectors";
 import {
   setIsCharacteristics,
   setArrOptionUsingEdit,
 } from "../../redux/actions/carsActions";
-import { postOrPutOnApi, uploadImg } from "../../redux/creators/carsCreators";
+import { postOrPutOnApi, uploadImg } from "../../redux/thunks/carsThunks";
 import { inputsConfig } from "../common/inputs";
 import { translateLabel } from "../../utils/translateLabel";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import { FC, useEffect } from "react";
 import { connect } from "react-redux";
 
 const FormCars = ({
-  isCharacteristics,
+  refHeader,
   selectedCarPost,
+  isCharacteristics,
   baseImg,
-  setIsCharacteristics,
   postOrPutOnApi,
   uploadImg,
+  setIsCharacteristics,
   setArrOptionUsingEdit,
 }) => {
-  const refForm = useRef();
-
   useEffect(() => {
     if (selectedCarPost) {
-      refForm.current.scrollIntoView();
+      refHeader.current.scrollIntoView({ behavior: "smooth" });
 
       inputsConfig.main.forEach((i) => {
         setValue(i.name, selectedCarPost[i.name]);
@@ -47,14 +45,16 @@ const FormCars = ({
         }
       });
     }
+
+    return () => reset();
   }, [selectedCarPost]);
 
   const {
     register,
-    handleSubmit,
     setValue,
+    handleSubmit,
     reset,
-    formState: { errors },
+    formState: {},
   } = useForm();
 
   const onSubmit = (data) => {
@@ -67,23 +67,26 @@ const FormCars = ({
   };
 
   return (
-    <div className="border p-5" ref={refForm}>
+    <div className="border p-5">
       <Form onSubmit={handleSubmit(onSubmit)}>
         {inputsConfig.main.map((i) => {
           const { name, label, type, onlyNumber, isImg } = i;
 
           return (
-            <MyInput
-              register={register}
-              label={label}
-              type={type}
-              nameEl={name}
-              onlyNumber={onlyNumber}
-              key={name}
-              isImg={isImg}
-              uploadImg={uploadImg}
-              baseImg={baseImg}
-            />
+            <Form.Group className="mb-3" key={name}>
+              <Form.Label>
+                <i>{label}</i>
+              </Form.Label>
+
+              <Form.Control
+                type={type}
+                {...register(name, {
+                  required: true,
+                  valueAsNumber: onlyNumber,
+                })}
+                onChange={isImg ? (e) => uploadImg(e, baseImg) : null}
+              />
+            </Form.Group>
           );
         })}
 
@@ -102,11 +105,12 @@ const FormCars = ({
             register={register}
             setValue={setValue}
             selectedCarPost={selectedCarPost}
+            isCharacteristics={isCharacteristics}
           />
         )}
 
         <div className="mt-5 d-flex justify-content-center">
-          <Button className="my-3" variant="primary" type="submit">
+          <Button variant="primary" type="submit">
             {selectedCarPost ? "Отредактировать" : "Создать"}
           </Button>
         </div>
@@ -116,14 +120,14 @@ const FormCars = ({
 };
 
 const mapStateToProps = (state) => ({
-  isCharacteristics: getIsCharacteristics(state),
   selectedCarPost: getSelectedCarPost(state),
+  isCharacteristics: getIsCharacteristics(state),
   baseImg: getBaseImg(state),
 });
 
 export default connect(mapStateToProps, {
-  setIsCharacteristics,
   postOrPutOnApi,
   uploadImg,
+  setIsCharacteristics,
   setArrOptionUsingEdit,
 })(FormCars);

@@ -1,6 +1,6 @@
 import { optionsConfig } from "../common/options";
 import { Form, Button } from "react-bootstrap";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 
 const OptionsF = ({
   register,
@@ -16,7 +16,7 @@ const OptionsF = ({
     if (isEdit) {
       arrOption.forEach((o, i) => {
         const wrapper = selectedCarPost.options[i];
-        setValue(`options.${i}.${o.value}`, wrapper?.[o.value]);
+        wrapper && setValue(`options.${i}.${o.value}`, wrapper[o.value]);
       });
     }
   }, [isEdit]);
@@ -46,8 +46,8 @@ const OptionsF = ({
         <Button
           variant="warning"
           className="my-3"
-          onClick={setArrOption}
           disabled={!selectedOption}
+          onClick={setArrOption}
         >
           Добавить
         </Button>
@@ -60,6 +60,7 @@ const OptionsF = ({
               <Form.Label>
                 <i>{o.label}</i>
               </Form.Label>
+
               <Form.Control
                 {...register((name = `options.${i}.${o.value}`))}
                 placeholder="Описание"
