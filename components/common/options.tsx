@@ -1,4 +1,4 @@
-export const optionsConfig = [
+export const optionsConfig: Array<{ value: string; label: string }> = [
   { value: "conditioner", label: "Кондиционер" },
   { value: "airbags", label: "Подушки безопасности" },
   { value: "multimedia", label: "Мультимедия" },

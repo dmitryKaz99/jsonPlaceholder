@@ -1,9 +1,9 @@
 import CarServices from "../../api/CarServices";
 import { convertBase64 } from "../../utils/convertBase64";
-import { Dispatch } from "redux";
-import { CarsActionTypes, CarsAction } from "../types";
 import { IPost } from "../../types/types";
+import { CarsActionTypes, CarsAction } from "../carsTypes";
 import { ChangeEvent } from "react";
+import { Dispatch } from "redux";
 
 export const getCarsWithApi = () => async (dispatch: Dispatch<CarsAction>) => {
   try {
@@ -19,8 +19,7 @@ export const getCarsWithApi = () => async (dispatch: Dispatch<CarsAction>) => {
 };
 
 export const postOrPutOnApi =
-  (data: IPost, id?: number) =>
-  (dispatch: Dispatch<CarsAction>, getCarsWithApi: () => CarsAction) => {
+  (data: IPost, id?: number) => (dispatch: Dispatch<CarsAction> | any) => {
     CarServices.postOrPut(data, id)
       .then(() => dispatch(getCarsWithApi()))
       .catch((e) =>

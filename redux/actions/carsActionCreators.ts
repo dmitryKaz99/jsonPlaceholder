@@ -1,5 +1,5 @@
-import { IOption, IPost } from "../../types/types";
-import { CarsAction, CarsActionTypes } from "../types";
+import { IPost, IOption } from "../../types/types";
+import { CarsAction, CarsActionTypes } from "../carsTypes";
 
 export const setCarPosts = (carPosts: IPost[]): CarsAction => ({
   type: CarsActionTypes.SET_CAR_POSTS,
@@ -32,6 +32,6 @@ export const setSelectedOption = (option: IOption): CarsAction => ({
 });
 export const setArrOption = () => ({ type: CarsActionTypes.SET_ARRAY_OPTION });
 export const setArrOptionUsingEdit = (optionEdit: IOption) => ({
-  type: CarsActionTypes.SET_ARRAY_OPTION,
+  type: CarsActionTypes.SET_ARRAY_OPTION_USING_EDIT,
   optionEdit,
 });

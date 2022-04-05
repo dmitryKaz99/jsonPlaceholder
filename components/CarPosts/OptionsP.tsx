@@ -1,6 +1,6 @@
 import { translateLabel } from "../../utils/translateLabel";
-import { FC } from "react";
 import { IOption } from "../../types/types";
+import { FC } from "react";
 
 interface IOptionsP {
   options: IOption[];

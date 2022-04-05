@@ -1,10 +1,10 @@
 import CharacteristicsP from "./CharacteristicsP";
 import OptionsP from "./OptionsP";
 import { Button, Card } from "react-bootstrap";
-import { FC } from "react";
 import { useTypedSelector } from "../../hooks/useTypesSelector";
 import { useActions } from "../../hooks/useActions";
 import { IPost } from "../../types/types";
+import { FC } from "react";
 
 interface ICars {
   cars: IPost[];

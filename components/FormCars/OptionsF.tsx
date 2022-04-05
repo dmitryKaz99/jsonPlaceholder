@@ -1,9 +1,9 @@
 import { optionsConfig } from "../common/options";
 import { Form, Button } from "react-bootstrap";
-import { FC, useEffect } from "react";
 import { useTypedSelector } from "../../hooks/useTypesSelector";
 import { useActions } from "../../hooks/useActions";
 import { IPost } from "../../types/types";
+import { FC, useEffect } from "react";
 
 interface IOptionsF {
   register: any;
@@ -25,14 +25,12 @@ const OptionsF: FC<IOptionsF> = ({
 
   useEffect(() => {
     if (isEdit) {
-      arrOption.forEach((o, i: number) => {
+      arrOption.forEach((o, i) => {
         const wrapper = selectedCarPost.options[i];
         wrapper && setValue(`options.${i}.${o.value}`, wrapper[o.value]);
       });
     }
   }, [isEdit]);
-
-  console.log(selectedOption);
 
   return (
     <>

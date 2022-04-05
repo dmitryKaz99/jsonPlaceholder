@@ -1,5 +1,5 @@
-import { FC } from "react";
 import { ICharacteristics } from "../../types/types";
+import { FC } from "react";
 interface ICharacteristicsP {
   characteristics: ICharacteristics;
 }

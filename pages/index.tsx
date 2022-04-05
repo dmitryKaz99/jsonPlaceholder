@@ -2,19 +2,18 @@ import FormCars from "../components/FormCars/FormCars";
 import Cars from "../components/CarPosts/Cars";
 import { MyPreloader } from "../components/UI/MyPreloader";
 import { Container } from "react-bootstrap";
-import { FC, useEffect, useRef } from "react";
 import { useTypedSelector } from "../hooks/useTypesSelector";
 import { useActions } from "../hooks/useActions";
+import { FC, useEffect, useRef } from "react";
 
 const Main: FC = () => {
   const { cars, isLoading, err } = useTypedSelector((state) => state.carsPage);
   const { getCarsWithApi } = useActions();
 
-  const refHeader = useRef<HTMLHeadingElement | null>(null);
+  const refHeader = useRef<any>(null);
 
   useEffect(() => {
-    const foo = () => getCarsWithApi();
-    foo();
+    getCarsWithApi();
   }, []);
 
   return (

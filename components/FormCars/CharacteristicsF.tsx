@@ -1,9 +1,9 @@
 import OptionsF from "./OptionsF";
 import { inputsConfig } from "../common/inputs";
 import { Form } from "react-bootstrap";
-import { ChangeEvent, FC, useEffect } from "react";
 import { useActions } from "../../hooks/useActions";
 import { IPost } from "../../types/types";
+import { FC, useEffect } from "react";
 
 interface ICharacteristicsF {
   register: any;
@@ -20,7 +20,7 @@ const CharacteristicsF: FC<ICharacteristicsF> = ({
 }) => {
   const { setSelectedOption } = useActions();
 
-  const generalName = "technical_characteristics";
+  const generalName: string = "technical_characteristics";
 
   useEffect(() => {
     if (selectedCarPost && isCharacteristics) {
@@ -31,7 +31,7 @@ const CharacteristicsF: FC<ICharacteristicsF> = ({
     }
   }, [selectedCarPost, isCharacteristics]);
 
-  const selectedOptionHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+  const selectedOptionHandler = (e: any) => {
     const index = e.nativeEvent.target.selectedIndex,
       label = e.nativeEvent.target[index].text;
     const value = e.target.value;

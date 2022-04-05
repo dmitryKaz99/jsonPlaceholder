@@ -1,4 +1,17 @@
-import { IPost, IOption } from "../types/types";
+import { IOption, IPost } from "../types/types";
+
+export interface CarsState {
+  cars: IPost[];
+  isLoading: boolean;
+  err: string;
+  selectedCarPost: IPost | null;
+
+  isCharacteristics: boolean;
+  baseImg: string;
+  selectedOption: IOption | null;
+  arrOption: IOption[];
+  isEdit: boolean;
+}
 
 export enum CarsActionTypes {
   SET_CAR_POSTS = "cars/SET_CAR_POSTS",

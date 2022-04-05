@@ -2,11 +2,11 @@ import CharacteristicsF from "./CharacteristicsF";
 import { inputsConfig } from "../common/inputs";
 import { translateLabel } from "../../utils/translateLabel";
 import { Form, Button } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import { ChangeEvent, FC, useEffect } from "react";
 import { useTypedSelector } from "../../hooks/useTypesSelector";
 import { useActions } from "../../hooks/useActions";
 import { IPost } from "../../types/types";
+import { useForm } from "react-hook-form";
+import { FC, useEffect, ChangeEvent } from "react";
 
 interface IFormCars {
   refHeader: any;
@@ -95,7 +95,6 @@ const FormCars: FC<IFormCars> = ({ refHeader }) => {
           <Form.Check
             type="checkbox"
             label="Технические характеристики?"
-            // disabled={selectedCarPost?.technical_characteristics}
             checked={isCharacteristics}
             onChange={() => setIsCharacteristics(!isCharacteristics)}
           />

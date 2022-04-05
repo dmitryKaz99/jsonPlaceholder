@@ -1,17 +1,4 @@
-import { IPost, IOption } from "../../types/types";
-import { CarsAction, CarsActionTypes } from "../types";
-interface CarsState {
-  cars: IPost[];
-  isLoading: boolean;
-  err: string;
-  selectedCarPost: IPost | null;
-
-  isCharacteristics: boolean;
-  baseImg: string;
-  selectedOption: IOption | null;
-  arrOption: IOption[];
-  isEdit: boolean;
-}
+import { CarsState, CarsAction, CarsActionTypes } from "../carsTypes";
 
 const initialState: CarsState = {
   cars: [],
@@ -48,6 +35,7 @@ const carsReducer = (state = initialState, action: CarsAction): CarsState => {
       return {
         ...state,
         isCharacteristics: action.flag,
+        selectedOption: null,
       };
     case CarsActionTypes.SET_BASE_IMG:
       return { ...state, baseImg: action.img };

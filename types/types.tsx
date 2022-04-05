@@ -8,7 +8,6 @@ export interface IPost {
   technical_characteristics: ICharacteristics;
   options: IOption[];
 }
-
 export interface ICharacteristics {
   brand: string;
   model: string;
@@ -16,7 +15,6 @@ export interface ICharacteristics {
   body: string;
   mileage: number;
 }
-
 export interface IOption {
   [option_name: string]: string;
 }
