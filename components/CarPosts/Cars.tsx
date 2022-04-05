@@ -1,12 +1,19 @@
 import CharacteristicsP from "./CharacteristicsP";
 import OptionsP from "./OptionsP";
-import { getSelectedCarPost } from "../../redux/selectors";
-import { setSelectedCarPost } from "../../redux/actions/carsActions";
 import { Button, Card } from "react-bootstrap";
-import { connect } from "react-redux";
 import { FC } from "react";
+import { useTypedSelector } from "../../hooks/useTypesSelector";
+import { useActions } from "../../hooks/useActions";
+import { IPost } from "../../types/types";
 
-const Cars = ({ cars, selectedCarPost, setSelectedCarPost }) => {
+interface ICars {
+  cars: IPost[];
+}
+
+const Cars: FC<ICars> = ({ cars }) => {
+  const { selectedCarPost } = useTypedSelector((state) => state.carsPage);
+  const { setSelectedCarPost } = useActions();
+
   if (!cars.length)
     return (
       <span>
@@ -58,8 +65,4 @@ const Cars = ({ cars, selectedCarPost, setSelectedCarPost }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  selectedCarPost: getSelectedCarPost(state),
-});
-
-export default connect(mapStateToProps, { setSelectedCarPost })(Cars);
+export default Cars;

@@ -1,16 +1,15 @@
-import { CarsAction } from "../actions/carsActions";
-import { CarsActionTypes } from "../types";
-
-export interface CarsState {
-  cars: any[];
+import { IPost, IOption } from "../../types/types";
+import { CarsAction, CarsActionTypes } from "../types";
+interface CarsState {
+  cars: IPost[];
   isLoading: boolean;
   err: string;
-  selectedCarPost: any;
+  selectedCarPost: IPost | null;
 
   isCharacteristics: boolean;
   baseImg: string;
-  selectedOption: any;
-  arrOption: any[];
+  selectedOption: IOption | null;
+  arrOption: IOption[];
   isEdit: boolean;
 }
 

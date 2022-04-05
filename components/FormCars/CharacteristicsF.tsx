@@ -1,29 +1,25 @@
 import OptionsF from "./OptionsF";
-import {
-  getSelectedOption,
-  getArrOption,
-  getIsEdit,
-} from "../../redux/selectors";
-import {
-  setSelectedOption,
-  setArrOption,
-} from "../../redux/actions/carsActions";
 import { inputsConfig } from "../common/inputs";
 import { Form } from "react-bootstrap";
-import { FC, useEffect } from "react";
-import { connect } from "react-redux";
+import { ChangeEvent, FC, useEffect } from "react";
+import { useActions } from "../../hooks/useActions";
+import { IPost } from "../../types/types";
 
-const CharacteristicsF = ({
+interface ICharacteristicsF {
+  register: any;
+  setValue: any;
+  selectedCarPost: IPost;
+  isCharacteristics: boolean;
+}
+
+const CharacteristicsF: FC<ICharacteristicsF> = ({
   register,
   setValue,
   selectedCarPost,
   isCharacteristics,
-  selectedOption,
-  setSelectedOption,
-  setArrOption,
-  arrOption,
-  isEdit,
 }) => {
+  const { setSelectedOption } = useActions();
+
   const generalName = "technical_characteristics";
 
   useEffect(() => {
@@ -35,7 +31,7 @@ const CharacteristicsF = ({
     }
   }, [selectedCarPost, isCharacteristics]);
 
-  const selectedOptionHandler = (e) => {
+  const selectedOptionHandler = (e: ChangeEvent<HTMLSelectElement>) => {
     const index = e.nativeEvent.target.selectedIndex,
       label = e.nativeEvent.target[index].text;
     const value = e.target.value;
@@ -70,23 +66,10 @@ const CharacteristicsF = ({
         register={register}
         setValue={setValue}
         selectedCarPost={selectedCarPost}
-        selectedOption={selectedOption}
         selectedOptionHandler={selectedOptionHandler}
-        setArrOption={setArrOption}
-        arrOption={arrOption}
-        isEdit={isEdit}
       />
     </>
   );
 };
 
-const mapStateToProps = (state) => ({
-  selectedOption: getSelectedOption(state),
-  arrOption: getArrOption(state),
-  isEdit: getIsEdit(state),
-});
-
-export default connect(mapStateToProps, {
-  setSelectedOption,
-  setArrOption,
-})(CharacteristicsF);
+export default CharacteristicsF;

@@ -1,10 +1,10 @@
 import CarServices from "../../api/CarServices";
 import { convertBase64 } from "../../utils/convertBase64";
 import { Dispatch } from "redux";
-import { CarsAction } from "../actions/carsActions";
-import { CarsActionTypes } from "../types";
+import { CarsActionTypes, CarsAction } from "../types";
+import { IPost } from "../../types/types";
+import { ChangeEvent } from "react";
 
-//car posts
 export const getCarsWithApi = () => async (dispatch: Dispatch<CarsAction>) => {
   try {
     dispatch({ type: CarsActionTypes.SET_IS_LOADING, flag: true });
@@ -18,11 +18,11 @@ export const getCarsWithApi = () => async (dispatch: Dispatch<CarsAction>) => {
   }
 };
 
-// form
 export const postOrPutOnApi =
-  (data: any, id: number) => (dispatch: Dispatch<CarsAction>) => {
+  (data: IPost, id?: number) =>
+  (dispatch: Dispatch<CarsAction>, getCarsWithApi: () => CarsAction) => {
     CarServices.postOrPut(data, id)
-      .then(() => dispatch(getCarsWithApi())) //!
+      .then(() => dispatch(getCarsWithApi()))
       .catch((e) =>
         dispatch(dispatch({ type: CarsActionTypes.SET_ERROR, err: e.message }))
       )
@@ -30,13 +30,15 @@ export const postOrPutOnApi =
         dispatch({ type: CarsActionTypes.SET_SELECTED_CAR_POST, post: null });
       });
   };
-export const uploadImg = (e: any) => async (dispatch: Dispatch<CarsAction>) => {
-  try {
-    const img = e.target.files[0],
-      base64 = await convertBase64(img);
+export const uploadImg =
+  (e: ChangeEvent<HTMLInputElement>) =>
+  async (dispatch: Dispatch<CarsAction>) => {
+    try {
+      const img = e.target.files[0],
+        base64 = await convertBase64(img);
 
-    dispatch({ type: CarsActionTypes.SET_BASE_IMG, img: base64 });
-  } catch (e) {
-    alert(e);
-  }
-};
+      dispatch({ type: CarsActionTypes.SET_BASE_IMG, img: base64 });
+    } catch (e) {
+      alert(e);
+    }
+  };

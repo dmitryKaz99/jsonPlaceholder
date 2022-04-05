@@ -68,6 +68,14 @@
         }
       ],
       "id": 3
+    },
+    {
+      "name": "1",
+      "description": "1",
+      "price": 1,
+      "image": "data:application/octet-stream;base64,Lmxlc3MtaGlzdG9yeS1maWxlOgo=",
+      "contacts": "1",
+      "id": 4
     }
   ]
 }

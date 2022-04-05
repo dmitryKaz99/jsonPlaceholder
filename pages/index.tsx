@@ -1,16 +1,21 @@
 import FormCars from "../components/FormCars/FormCars";
 import Cars from "../components/CarPosts/Cars";
 import { MyPreloader } from "../components/UI/MyPreloader";
-import { getCars, getIsLoading, getError } from "../redux/selectors";
-import { getCarsWithApi } from "../redux/thunks/carsThunks";
 import { Container } from "react-bootstrap";
 import { FC, useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { RootState } from "../redux/store";
+import { useTypedSelector } from "../hooks/useTypesSelector";
+import { useActions } from "../hooks/useActions";
 
-const Main = ({ cars, isLoading, err, getCarsWithApi }) => {
-  const refHeader = useRef();
-  useEffect(() => getCarsWithApi(), []);
+const Main: FC = () => {
+  const { cars, isLoading, err } = useTypedSelector((state) => state.carsPage);
+  const { getCarsWithApi } = useActions();
+
+  const refHeader = useRef<HTMLHeadingElement | null>(null);
+
+  useEffect(() => {
+    const foo = () => getCarsWithApi();
+    foo();
+  }, []);
 
   return (
     <Container className="my-5">
@@ -32,10 +37,4 @@ const Main = ({ cars, isLoading, err, getCarsWithApi }) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
-  cars: getCars(state),
-  isLoading: getIsLoading(state),
-  err: getError(state),
-});
-
-export default connect(mapStateToProps, { getCarsWithApi })(Main);
+export default Main;

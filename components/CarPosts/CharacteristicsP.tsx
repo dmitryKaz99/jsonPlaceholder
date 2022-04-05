@@ -1,6 +1,10 @@
 import { FC } from "react";
+import { ICharacteristics } from "../../types/types";
+interface ICharacteristicsP {
+  characteristics: ICharacteristics;
+}
 
-const CharacteristicsP = ({ characteristics }) => {
+const CharacteristicsP: FC<ICharacteristicsP> = ({ characteristics }) => {
   const { brand, model, productionYear, body, mileage } = characteristics;
 
   return (

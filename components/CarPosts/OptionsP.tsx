@@ -1,7 +1,12 @@
 import { translateLabel } from "../../utils/translateLabel";
 import { FC } from "react";
+import { IOption } from "../../types/types";
 
-const OptionsP = ({ options }) => {
+interface IOptionsP {
+  options: IOption[];
+}
+
+const OptionsP: FC<IOptionsP> = ({ options }) => {
   return (
     <div>
       <hr />

@@ -1,4 +1,4 @@
-export const translateLabel = (label) => {
+export const translateLabel = (label: string) => {
   switch (label) {
     case "conditioner":
       return "Кондиционер";

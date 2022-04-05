@@ -1,31 +1,28 @@
 import CharacteristicsF from "./CharacteristicsF";
-import {
-  getSelectedCarPost,
-  getIsCharacteristics,
-  getBaseImg,
-} from "../../redux/selectors";
-import {
-  setIsCharacteristics,
-  setArrOptionUsingEdit,
-} from "../../redux/actions/carsActions";
-import { postOrPutOnApi, uploadImg } from "../../redux/thunks/carsThunks";
 import { inputsConfig } from "../common/inputs";
 import { translateLabel } from "../../utils/translateLabel";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { FC, useEffect } from "react";
-import { connect } from "react-redux";
+import { ChangeEvent, FC, useEffect } from "react";
+import { useTypedSelector } from "../../hooks/useTypesSelector";
+import { useActions } from "../../hooks/useActions";
+import { IPost } from "../../types/types";
 
-const FormCars = ({
-  refHeader,
-  selectedCarPost,
-  isCharacteristics,
-  baseImg,
-  postOrPutOnApi,
-  uploadImg,
-  setIsCharacteristics,
-  setArrOptionUsingEdit,
-}) => {
+interface IFormCars {
+  refHeader: any;
+}
+
+const FormCars: FC<IFormCars> = ({ refHeader }) => {
+  const { selectedCarPost, isCharacteristics, baseImg } = useTypedSelector(
+    (state) => state.carsPage
+  );
+  const {
+    postOrPutOnApi,
+    uploadImg,
+    setIsCharacteristics,
+    setArrOptionUsingEdit,
+  } = useActions();
+
   useEffect(() => {
     if (selectedCarPost) {
       refHeader.current.scrollIntoView({ behavior: "smooth" });
@@ -57,7 +54,7 @@ const FormCars = ({
     formState: {},
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: IPost) => {
     if (data.image) data.image = baseImg;
     selectedCarPost
       ? postOrPutOnApi(data, selectedCarPost.id)
@@ -84,7 +81,11 @@ const FormCars = ({
                   required: true,
                   valueAsNumber: onlyNumber,
                 })}
-                onChange={isImg ? (e) => uploadImg(e, baseImg) : null}
+                onChange={
+                  isImg
+                    ? (e: ChangeEvent<HTMLInputElement>) => uploadImg(e)
+                    : null
+                }
               />
             </Form.Group>
           );
@@ -94,7 +95,7 @@ const FormCars = ({
           <Form.Check
             type="checkbox"
             label="Технические характеристики?"
-            disabled={selectedCarPost?.technical_characteristics}
+            // disabled={selectedCarPost?.technical_characteristics}
             checked={isCharacteristics}
             onChange={() => setIsCharacteristics(!isCharacteristics)}
           />
@@ -119,15 +120,4 @@ const FormCars = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  selectedCarPost: getSelectedCarPost(state),
-  isCharacteristics: getIsCharacteristics(state),
-  baseImg: getBaseImg(state),
-});
-
-export default connect(mapStateToProps, {
-  postOrPutOnApi,
-  uploadImg,
-  setIsCharacteristics,
-  setArrOptionUsingEdit,
-})(FormCars);
+export default FormCars;
