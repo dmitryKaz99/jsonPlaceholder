@@ -1,0 +1,36 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-y: scroll;
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* modal */
+.modal {
+  width: 100%;
+  height: 100%;
+  background:#00000075;
+  display: flex;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal_body {
+  overflow: hidden;
+  padding-right: 17px;
+}
+.modal_body nav {
+  padding-right: 17px;
+}
