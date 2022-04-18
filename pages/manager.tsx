@@ -3,7 +3,7 @@ import CarsBriefly from "../components/Posts/briefly/CarsBriefly";
 import MyLimit from "../components/UI/MyLimit";
 import MyPagination from "../components/UI/MyPagination";
 import { IPost } from "../types/types";
-import { getCarsSSR } from "../utils/getAuxiliaryMethods";
+import { utilsConfig } from "../utils";
 import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypesSelector";
 import { useRouter } from "next/router";
@@ -32,7 +32,9 @@ const Manager: FC<IManager> = ({ cars, totalCount }) => {
 
   useEffect(() => {
     if (isUpdate) {
-      router.replace(router.asPath);
+      cars.length === 1
+        ? setCurrentPage(currentPage - 1)
+        : router.replace(router.asPath);
 
       setUpdatePageManager(false);
     }
@@ -62,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       page = query.page || 1,
       queryParams = `?_limit=${limit}&_page=${page}`;
 
-    const { data, totalCount } = await getCarsSSR(queryParams);
+    const { data, totalCount } = await utilsConfig.getCarsSSR(queryParams);
 
     if (!data) return { notFound: true };
     return {

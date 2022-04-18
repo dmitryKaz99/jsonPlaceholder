@@ -1,6 +1,6 @@
 import { IInput, inputsConfig } from "../../common/inputs";
 import { bodyOptionsAdd } from "../../common/options";
-import { onFilter } from "../../../utils/onFilter";
+import { utilsConfig } from "../../../utils";
 import { IPost, ISearchPost } from "../../../types/types";
 import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
@@ -31,7 +31,7 @@ const CarsFilterForm: FC<ICarsFilterForm> = ({ cars, router }) => {
   } = useForm();
 
   const onSubmit = (data: ISearchPost) => {
-    const res = onFilter(carsForFilter, data);
+    const res = utilsConfig.onFilter(carsForFilter, data);
     res === ""
       ? router.push(`/?search=id=`)
       : router.push(`/?search=id=${res}&page=1`);

@@ -1,7 +1,5 @@
 import CharacteristicsDetail from "./CharacteristicsDetail";
 import OptionsDetail from "./OptionsDetail";
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypesSelector";
 import { IPost } from "../../../types/types";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -22,19 +20,7 @@ const CarDetail: FC<ICarDetail> = ({ selectedCarPost }) => {
     options,
   } = selectedCarPost;
 
-  const { isPrevPathSearch } = useTypedSelector((state) => state.carsPage),
-    { setIsPrevPathSearch } = useActions();
-
   const router = useRouter();
-
-  const goToCorrectPath = () => {
-    if (isPrevPathSearch) {
-      router.push("/");
-      setIsPrevPathSearch(false);
-    } else {
-      router.push("/manager");
-    }
-  };
 
   return (
     <div className="d-flex justify-content-center">
@@ -68,8 +54,8 @@ const CarDetail: FC<ICarDetail> = ({ selectedCarPost }) => {
           {options && <OptionsDetail options={options} />}
 
           <div className="d-flex justify-content-center my-3">
-            <Button variant="primary" onClick={goToCorrectPath}>
-              Вернуться
+            <Button variant="primary" onClick={() => router.back()}>
+              Вернуться назад
             </Button>
           </div>
         </Card.Body>

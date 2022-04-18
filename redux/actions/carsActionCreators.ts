@@ -1,6 +1,7 @@
 import { IPost, IOption } from "../../types/types";
 import { CarsAction, CarsActionTypes } from "../carsTypes";
 
+// default
 export const setCarPosts = (carPosts: IPost[]): CarsAction => ({
   type: CarsActionTypes.SET_CAR_POSTS,
   carPosts,
@@ -14,6 +15,7 @@ export const setError = (err: string): CarsAction => ({
   err,
 });
 
+// form
 export const setIsCharacteristics = (flag: boolean): CarsAction => ({
   type: CarsActionTypes.SET_IS_CHARACTERISTICS,
   flag,
@@ -35,6 +37,7 @@ export const setResetForm = (): CarsAction => ({
   type: CarsActionTypes.SET_RESET_FORM,
 });
 
+// page manager
 export const setLimit = (newLimit: string) => ({
   type: CarsActionTypes.SET_LIMIT,
   newLimit,
@@ -48,6 +51,7 @@ export const setUpdatePageManager = (flag: boolean) => ({
   flag,
 });
 
+// additions
 export const setIsModal = (flag: boolean) => ({
   type: CarsActionTypes.SET_IS_MODAL,
   flag,
@@ -55,9 +59,4 @@ export const setIsModal = (flag: boolean) => ({
 export const setIdForDelete = (id: number) => ({
   type: CarsActionTypes.SET_ID_FOR_DELETE,
   id,
-});
-
-export const setIsPrevPathSearch = (flag: boolean) => ({
-  type: CarsActionTypes.SET_IS_PREV_PATH_SEARCH,
-  flag,
 });

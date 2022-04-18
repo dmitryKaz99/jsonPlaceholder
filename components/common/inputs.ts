@@ -22,7 +22,6 @@ export interface IInput {
   name: string;
   label: string;
   type: string;
-  mask?: string;
   isPositiveNumbers?: IWithRegExpValidate;
   isMaxNumbersPrice?: IWithDefaultValidate;
   isMaxNumbersMileage?: IWithDefaultValidate;

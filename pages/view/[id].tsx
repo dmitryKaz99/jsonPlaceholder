@@ -1,6 +1,6 @@
 import MyNavigation from "../../components/UI/MyNavigation";
 import CarDetail from "../../components/Posts/detail/CarDetail";
-import { getPathsSSG, getCarSSG } from "../../utils/getAuxiliaryMethods";
+import { utilsConfig } from "../../utils";
 import { IPost } from "../../types/types";
 import { FC } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -21,11 +21,11 @@ const View: FC<IView> = ({ car }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getPathsSSG();
+  const paths = await utilsConfig.getPathsSSG();
   return { paths, fallback: false };
 };
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const car = await getCarSSG(params);
+  const car = await utilsConfig.getCarSSG(params);
 
   if (!car) return { notFound: true };
   return { props: { car } };

@@ -18,13 +18,8 @@ const CarsBriefly: FC<ICarsBriefly> = ({ cars, isManager, isSearch }) => {
   const { isLoading, isModal, idForDelete } = useTypedSelector(
       (state) => state.carsPage
     ),
-    {
-      setIsLoading,
-      deletePostOnApi,
-      setIsModal,
-      setIdForDelete,
-      setIsPrevPathSearch,
-    } = useActions();
+    { setIsLoading, deletePostOnApi, setIsModal, setIdForDelete } =
+      useActions();
 
   const router = useRouter();
 
@@ -41,11 +36,7 @@ const CarsBriefly: FC<ICarsBriefly> = ({ cars, isManager, isSearch }) => {
     };
   }, []);
 
-  const exitModal = () => setIsModal(false),
-    goToViewFromSearch = (id: number) => {
-      setIsPrevPathSearch(true);
-      router.push(`/view/${id}`);
-    };
+  const exitModal = () => setIsModal(false);
 
   if (isLoading) return <MyPreloader />;
   if (!cars.length)
@@ -136,7 +127,7 @@ const CarsBriefly: FC<ICarsBriefly> = ({ cars, isManager, isSearch }) => {
                   <Button
                     className="m-1"
                     variant="primary"
-                    onClick={() => goToViewFromSearch(post.id)}
+                    onClick={() => router.push(`/view/${post.id}`)}
                   >
                     Смотреть
                   </Button>

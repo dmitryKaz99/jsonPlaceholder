@@ -1,4 +1,4 @@
-import { getPagesArray } from "../../utils/getPagesArray";
+import { utilsConfig } from "../../utils";
 import { Button } from "react-bootstrap";
 import { FC } from "react";
 
@@ -15,7 +15,7 @@ const MyPagination: FC<IMyPagination> = ({
   currentPage,
   setCurrentPage,
 }) => {
-  const pages = getPagesArray(totalCount, limit);
+  const pages = utilsConfig.getPagesArray(totalCount, limit);
 
   return (
     <div className="d-flex flex-wrap justify-content-center my-4">

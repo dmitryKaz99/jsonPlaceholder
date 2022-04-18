@@ -1,4 +1,4 @@
-import { translateLabel } from "../../../utils/translateLabel";
+import { utilsConfig } from "../../../utils";
 import { IOption } from "../../../types/types";
 import { ListGroup } from "react-bootstrap";
 import { FC } from "react";
@@ -16,15 +16,15 @@ const OptionsDetail: FC<IOptionsDetail> = ({ options }) => {
 
       <ListGroup variant="flush">
         {options.map((o, i) => {
-          for (const [key, value] of Object.entries(o)) {
-            const labelRU = translateLabel(key);
+          const key = Object.keys(o),
+            value = Object.values(o);
+          const labelRU = utilsConfig.translateLabel(key[0]);
 
-            return (
-              <ListGroup.Item key={i}>
-                {labelRU}: {value || "Описания нет"}
-              </ListGroup.Item>
-            );
-          }
+          return (
+            <ListGroup.Item key={i}>
+              {labelRU}: {value[0] || "Описания нет"}
+            </ListGroup.Item>
+          );
         })}
       </ListGroup>
     </div>

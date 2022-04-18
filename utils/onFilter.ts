@@ -24,30 +24,37 @@ export const onFilter = (cars: IPost[], data: ISearchPost) => {
 
 const filterArrByText = (arr: IPost[], obj: IObjText) => {
   for (const key in obj) {
-    if (obj[key] === "") return arr;
+    if (obj[key] === "") break;
 
-    return arr.filter((post: IPost) =>
+    const arrFilter = arr.filter((post: IPost) =>
       post.technical_characteristics?.[key]
         .toString()
         .toLocaleLowerCase()
         .includes(obj[key].toString().toLocaleLowerCase())
     );
+
+    return arrFilter;
   }
+
+  return arr;
 };
 const filterArrByRangeNumber = (arr: IPost[], obj: IObjRangeNumber) => {
   for (const key in obj) {
-    return arr.filter((post: IPost) => {
+    const arrFilter = arr.filter((post: IPost) => {
       const value =
         key === "mileage" ? post.technical_characteristics?.[key] : post[key];
-
       const start = obj[key].start,
         end = obj[key].end;
 
-      if (start === "" && end === "") return arr;
-      const correctStart = start === "" ? -Infinity : start,
-        correctEnd = end === "" ? Infinity : end;
+      if (start === "" && end === "") return true;
 
-      return correctStart <= value && value <= correctEnd;
+      const correctValue = +value,
+        correctStart = start === "" ? -Infinity : +start,
+        correctEnd = end === "" ? Infinity : +end;
+
+      return correctStart <= correctValue && correctValue <= correctEnd;
     });
+
+    return arrFilter;
   }
 };

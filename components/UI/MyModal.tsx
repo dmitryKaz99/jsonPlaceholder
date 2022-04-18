@@ -35,7 +35,7 @@ const MyModal: FC<IMyModal> = ({
           <Modal.Footer>
             {children}
 
-            <Button variant="primary" onClick={() => onAction()}>
+            <Button variant="secondary" onClick={() => onAction()}>
               {textBtn}
             </Button>
           </Modal.Footer>

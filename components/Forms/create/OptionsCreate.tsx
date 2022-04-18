@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { useTypedSelector } from "../../../hooks/useTypesSelector";
 import { useActions } from "../../../hooks/useActions";
 import { IPost } from "../../../types/types";
-import { FC, useEffect } from "react";
+import { ChangeEvent, FC, useEffect } from "react";
 
 interface IOptionsCreate {
   register: any;
@@ -30,8 +30,8 @@ const OptionsCreate: FC<IOptionsCreate> = ({
     }
   }, [isEdit]);
 
-  const selectedOptionHandler = (e: any) => {
-    const index = e.nativeEvent.target.selectedIndex,
+  const selectedOptionHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = (e.nativeEvent.target as any).selectedIndex,
       label = e.nativeEvent.target[index].text;
     const value = e.target.value;
 

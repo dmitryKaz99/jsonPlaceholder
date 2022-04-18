@@ -2,7 +2,7 @@ import CharacteristicsCreate from "./CharacteristicsCreate";
 import OptionsCreate from "./OptionsCreate";
 import MyModal from "../../UI/MyModal";
 import { GENERAL_NAME, inputsConfig } from "../../common/inputs";
-import { translateLabel } from "../../../utils/translateLabel";
+import { utilsConfig } from "../../../utils";
 import { IPost } from "../../../types/types";
 import { Form, Button } from "react-bootstrap";
 import { useTypedSelector } from "../../../hooks/useTypesSelector";
@@ -16,9 +16,8 @@ interface ICarsCreateForm {
 }
 
 const CarsCreateForm: FC<ICarsCreateForm> = ({ selectedCarPost }) => {
-  const { isCharacteristics, baseImg, isModal } = useTypedSelector(
-    (state) => state.carsPage
-  );
+  const { isCharacteristics, baseImg, isModal, idCreatedPost } =
+    useTypedSelector((state) => state.carsPage);
   const {
     postOrPutPostOnApi,
     setIsCharacteristics,
@@ -49,10 +48,10 @@ const CarsCreateForm: FC<ICarsCreateForm> = ({ selectedCarPost }) => {
         : setIsCharacteristics(false);
 
       selectedCarPost.options?.forEach((o) => {
-        for (const key of Object.keys(o)) {
-          const labelRU = translateLabel(key);
-          setArrOptionUsingEdit({ value: key, label: labelRU });
-        }
+        const key = Object.keys(o),
+          labelRU = utilsConfig.translateLabel(key[0]);
+
+        setArrOptionUsingEdit({ value: key[0], label: labelRU });
       });
     }
   }, [selectedCarPost]);
@@ -82,9 +81,13 @@ const CarsCreateForm: FC<ICarsCreateForm> = ({ selectedCarPost }) => {
   };
 
   const exitModal = () => {
-    selectedCarPost && router.push("/manager");
-    setIsModal(false);
-  };
+      selectedCarPost && router.push("/manager");
+      setIsModal(false);
+    },
+    goToViewFormCreate = () => {
+      router.push(`/view/${idCreatedPost}`);
+      setIsModal(false);
+    };
 
   return (
     <>
@@ -188,10 +191,14 @@ const CarsCreateForm: FC<ICarsCreateForm> = ({ selectedCarPost }) => {
           body={`Поздравляем, Ваш пост успешно ${
             selectedCarPost ? "отредактирован!" : "создан!"
           }`}
-          textBtn={`${
-            selectedCarPost ? "Выйти из формы" : "Создать новую форму"
-          }`}
-        />
+          textBtn={`${selectedCarPost ? "Выйти" : "Закрыть"}`}
+        >
+          {!selectedCarPost && (
+            <Button variant="primary" onClick={goToViewFormCreate}>
+              Смотреть
+            </Button>
+          )}
+        </MyModal>
       )}
     </>
   );
